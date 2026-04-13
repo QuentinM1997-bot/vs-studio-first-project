@@ -15,25 +15,14 @@
 </style>
 </head>
 <body>
-<img id="s0" class="active" alt="Page 1">
-<img id="s1" alt="Page 2">
+<img id="s0" class="active" src="page1.png" alt="Page 1">
+<img id="s1" src="page2.png" alt="Page 2">
 <script>
-  // Cache-busting key: changes every 12h → forces new screenshot from thum.io
-  const cb = "20260413_v5";
-  const pages = [
-    "https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd",
-    "https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_b8w3oo38zd"
-  ];
-  const thumbBase = "https://image.thum.io/get/width/3840/crop/2160/wait/8/png/";
-  const imgs = [document.getElementById('s0'), document.getElementById('s1')];
-
-  // Set screenshot URLs with cache-buster
-  imgs[0].src = thumbBase + pages[0] + "?cb=" + cb;
-  imgs[1].src = thumbBase + pages[1] + "?cb=" + cb;
-
   // Rotate every 60 seconds
   let current = 0;
+  const imgs = [document.getElementById('s0'), document.getElementById('s1')];
   let loaded = 0;
+
   const startRotation = () => {
     setInterval(() => {
       const next = 1 - current;
@@ -48,10 +37,12 @@
       loaded++;
       if (loaded === 2) startRotation();
     });
+    // Handle already-cached images
+    if (img.complete) {
+      loaded++;
+      if (loaded === 2) startRotation();
+    }
   });
-
-  // Reload page every 12h to pick up fresh screenshots
-  setTimeout(() => location.reload(), 12 * 3600 * 1000);
 </script>
 </body>
 </html>
