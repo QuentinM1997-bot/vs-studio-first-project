@@ -43,6 +43,9 @@
       if (loaded === 2) startRotation();
     }
   });
+
+  // Reload page every 12h to pick up fresh screenshots
+  setTimeout(() => location.reload(), 12 * 3600 * 1000);
 </script>
 </body>
 </html>
