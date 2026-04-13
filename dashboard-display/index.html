@@ -19,7 +19,7 @@
 <img id="s1" alt="Page 2">
 <script>
   // Cache-busting key: changes every 12h → forces new screenshot from thum.io
-  const cb = Math.floor(Date.now() / (12 * 3600 * 1000));
+  const cb = Math.floor(Date.now() / (12 * 3600 * 1000)) + "_v2";
   const pages = [
     "https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd",
     "https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_b8w3oo38zd"
