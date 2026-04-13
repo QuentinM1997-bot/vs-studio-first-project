@@ -22,7 +22,7 @@ PAGES = [
 
 opts = Options()
 opts.add_argument("--headless=new")
-opts.add_argument("--window-size=1920,1080")
+opts.add_argument("--window-size=2560,1440")
 opts.add_argument("--force-device-scale-factor=2")
 opts.add_argument("--hide-scrollbars")
 opts.add_argument("--no-sandbox")
@@ -34,6 +34,9 @@ for url, path in PAGES:
     print(f"Capturing {url}...")
     driver.get(url)
     time.sleep(12)
+    height = driver.execute_script("return document.documentElement.scrollHeight")
+    driver.set_window_size(2560, height)
+    time.sleep(2)
     driver.save_screenshot(path)
     print(f"Saved to {path}")
 
