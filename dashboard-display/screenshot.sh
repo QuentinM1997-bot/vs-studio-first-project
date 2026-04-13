@@ -34,7 +34,9 @@ for url, path in PAGES:
     print(f"Capturing {url}...")
     driver.get(url)
     time.sleep(12)
-    # Keep 2560x1440 (16:9) viewport - matches TV ratio
+    height = driver.execute_script("return document.documentElement.scrollHeight")
+    driver.set_window_size(2560, height)
+    time.sleep(2)
     driver.save_screenshot(path)
     print(f"Saved to {path}")
 
