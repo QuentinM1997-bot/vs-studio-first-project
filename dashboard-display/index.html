@@ -5,47 +5,53 @@
 <title>Ignyte Dashboard</title>
 <style>
   html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; }
-  iframe {
+  img {
     position:absolute; top:0; left:0;
-    width:100%; height:100%; border:0;
+    width:100%; height:100%;
+    object-fit: cover; object-position: top left;
     opacity:0; transition: opacity 1s ease-in-out;
   }
-  iframe.active { opacity:1; z-index:1; }
+  img.active { opacity:1; z-index:1; }
 </style>
 </head>
 <body>
-<iframe id="f0" class="active" src="https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd"></iframe>
-<iframe id="f1" src="https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_b8w3oo38zd"></iframe>
+<img id="s0" class="active" alt="Page 1">
+<img id="s1" alt="Page 2">
 <script>
-  // Both iframes are loaded once at page start and never reloaded.
-  // Rotation is just an opacity/z-index toggle — no flicker, no re-hydration.
-  const frames = [document.getElementById('f0'), document.getElementById('f1')];
-  let current = 0;
-  const INTERVAL_MS = 60000; // 60s per page
+  // Cache-busting key: changes every 12h → forces new screenshot from thum.io
+  const cb = Math.floor(Date.now() / (12 * 3600 * 1000));
+  const pages = [
+    "https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd",
+    "https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_b8w3oo38zd"
+  ];
+  const thumbBase = "https://image.thum.io/get/width/1920/crop/1080/wait/8/png/";
+  const imgs = [document.getElementById('s0'), document.getElementById('s1')];
 
-  // Wait for both iframes to finish loading before starting rotation
+  // Set screenshot URLs with cache-buster
+  imgs[0].src = thumbBase + pages[0] + "?cb=" + cb;
+  imgs[1].src = thumbBase + pages[1] + "?cb=" + cb;
+
+  // Rotate every 60 seconds
+  let current = 0;
   let loaded = 0;
   const startRotation = () => {
     setInterval(() => {
       const next = 1 - current;
-      frames[next].classList.add('active');
-      frames[current].classList.remove('active');
+      imgs[next].classList.add('active');
+      imgs[current].classList.remove('active');
       current = next;
-    }, INTERVAL_MS);
+    }, 60000);
   };
 
-  frames.forEach(f => {
-    f.addEventListener('load', () => {
+  imgs.forEach(img => {
+    img.addEventListener('load', () => {
       loaded++;
-      if (loaded === frames.length) {
-        // Give Looker Studio a few seconds to hydrate before rotating
-        setTimeout(startRotation, 5000);
-      }
+      if (loaded === 2) startRotation();
     });
   });
 
-  // Full reload every 2h to prevent session/memory drift
-  setTimeout(() => location.reload(), 2 * 3600 * 1000);
+  // Reload page every 12h to pick up fresh screenshots
+  setTimeout(() => location.reload(), 12 * 3600 * 1000);
 </script>
 </body>
 </html>
