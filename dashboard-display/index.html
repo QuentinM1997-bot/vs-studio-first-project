@@ -44,8 +44,15 @@
     }
   });
 
-  // Reload page every 12h to pick up fresh screenshots
-  setTimeout(() => location.reload(), 12 * 3600 * 1000);
+  // Reload daily at 09:05 (5 min after screenshot cron at 09:00) to pick up fresh images
+  const scheduleReload = () => {
+    const now = new Date();
+    const next = new Date(now);
+    next.setHours(9, 5, 0, 0);
+    if (next <= now) next.setDate(next.getDate() + 1);
+    setTimeout(() => location.reload(), next - now);
+  };
+  scheduleReload();
 </script>
 </body>
 </html>
