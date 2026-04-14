@@ -1,10 +1,10 @@
 #!/bin/bash
 # Capture Looker Studio dashboard screenshots and push to GitHub
-# Runs via cron every 12h
+# Runs via cron daily at 07:00 Dubai
 
 set -e
 
-REPO_DIR="/tmp/vs-studio-first-project"
+REPO_DIR="$HOME/vs-studio-first-project"
 
 cd "$REPO_DIR"
 
@@ -14,9 +14,11 @@ import time, base64
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+import os
+REPO = os.path.expanduser("~/vs-studio-first-project")
 PAGES = [
-    ("https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd", "/tmp/vs-studio-first-project/dashboard-display/page1.png"),
-    ("https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_b8w3oo38zd", "/tmp/vs-studio-first-project/dashboard-display/page2.png"),
+    ("https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd", f"{REPO}/dashboard-display/page1.png"),
+    ("https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_b8w3oo38zd", f"{REPO}/dashboard-display/page2.png"),
 ]
 
 opts = Options()

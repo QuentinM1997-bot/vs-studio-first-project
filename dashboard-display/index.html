@@ -44,11 +44,11 @@
     }
   });
 
-  // Reload daily at 09:05 (5 min after screenshot cron at 09:00) to pick up fresh images
+  // Reload daily at 07:05 (5 min after screenshot cron at 07:00) to pick up fresh images
   const scheduleReload = () => {
     const now = new Date();
     const next = new Date(now);
-    next.setHours(9, 5, 0, 0);
+    next.setHours(7, 5, 0, 0);
     if (next <= now) next.setDate(next.getDate() + 1);
     setTimeout(() => location.reload(), next - now);
   };
