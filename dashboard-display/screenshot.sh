@@ -6,15 +6,20 @@ set -e
 
 REPO_DIR="$HOME/vs-studio-first-project"
 
+# Use venv python if available, fallback to system python3
+PYTHON="python3"
+if [ -x "$HOME/dashboard-venv/bin/python3" ]; then
+    PYTHON="$HOME/dashboard-venv/bin/python3"
+fi
+
 cd "$REPO_DIR"
 
 # Take full-page screenshots via CDP (no cropping, retina 2x)
-python3 - <<'PYTHON'
-import time, base64
+"$PYTHON" - <<"PYTHON"
+import time, base64, os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-import os
 REPO = os.path.expanduser("~/vs-studio-first-project")
 PAGES = [
     ("https://lookerstudio.google.com/embed/reporting/0809760c-30c8-4961-85b4-ddf29531e4a8/page/p_cgr1rn38zd", f"{REPO}/dashboard-display/page1.png"),
@@ -27,6 +32,7 @@ opts.add_argument("--window-size=2560,2000")
 opts.add_argument("--hide-scrollbars")
 opts.add_argument("--no-sandbox")
 opts.add_argument("--disable-gpu")
+opts.add_argument("--disable-dev-shm-usage")
 
 driver = webdriver.Chrome(options=opts)
 
@@ -63,7 +69,7 @@ git add dashboard-display/page1.png dashboard-display/page2.png
 if git diff --cached --quiet; then
     echo "No changes to push"
 else
-    git commit -m "auto: refresh dashboard screenshots $(date '+%Y-%m-%d %H:%M')"
+    DATE=$(date "+%Y-%m-%d %H:%M"); git commit -m "auto: refresh dashboard screenshots $DATE"
     git push origin main
     echo "Pushed to GitHub"
 fi
