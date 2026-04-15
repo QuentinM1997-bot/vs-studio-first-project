@@ -15,9 +15,15 @@
 </style>
 </head>
 <body>
-<img id="s0" class="active" src="page1.png" alt="Page 1">
-<img id="s1" src="page2.png" alt="Page 2">
+<img id="s0" class="active" alt="Page 1">
+<img id="s1" alt="Page 2">
 <script>
+  // Load images direct from raw.githubusercontent (no redirect) with daily cache-bust
+  const BASE = "https://raw.githubusercontent.com/QuentinM1997-bot/vs-studio-first-project/main/dashboard-display";
+  const v = Math.floor(Date.now() / 3600000); // hourly cache-bust
+  document.getElementById('s0').src = `${BASE}/page1.png?v=${v}`;
+  document.getElementById('s1').src = `${BASE}/page2.png?v=${v}`;
+
   // Rotate every 60 seconds
   let current = 0;
   const imgs = [document.getElementById('s0'), document.getElementById('s1')];
