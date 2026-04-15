@@ -39,7 +39,7 @@ driver = webdriver.Chrome(options=opts)
 for url, path in PAGES:
     print(f"Capturing {url}...")
     driver.get(url)
-    time.sleep(15)
+    time.sleep(30)
 
     w = driver.execute_script("return document.documentElement.scrollWidth")
     h = driver.execute_script("return document.documentElement.scrollHeight")
