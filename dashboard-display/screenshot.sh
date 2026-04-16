@@ -37,13 +37,22 @@ opts.add_argument("--disable-dev-shm-usage")
 opts.add_argument("--disable-blink-features=AutomationControlled")
 opts.add_argument("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36")
 
+import base64
 driver = webdriver.Chrome(options=opts)
 for url, path in PAGES:
     print(f"Capturing {url}...")
     driver.get(url)
     time.sleep(30)
-    driver.save_screenshot(path)
-    print(f"  Saved {path} ({os.path.getsize(path)}B)")
+    w = driver.execute_script("return document.documentElement.scrollWidth")
+    h = driver.execute_script("return document.documentElement.scrollHeight")
+    result = driver.execute_cdp_cmd("Page.captureScreenshot", {
+        "format": "png",
+        "captureBeyondViewport": False,
+        "clip": {"x": 0, "y": 0, "width": w, "height": h, "scale": 1}
+    })
+    with open(path, "wb") as f:
+        f.write(base64.b64decode(result["data"]))
+    print(f"  Saved {path} ({w}x{h}, {os.path.getsize(path)}B)")
 driver.quit()
 print("Screenshots done!")
 PYTHON
