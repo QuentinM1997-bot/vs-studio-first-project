@@ -29,7 +29,7 @@ PAGES = [
 
 opts = Options()
 opts.add_argument("--headless=new")
-opts.add_argument("--window-size=2560,1440")
+opts.add_argument("--window-size=2560,1600")
 opts.add_argument("--hide-scrollbars")
 opts.add_argument("--no-sandbox")
 opts.add_argument("--disable-gpu")
