@@ -13,6 +13,9 @@ fi
 
 cd "$REPO_DIR"
 
+# Reconcile with remote before capture to avoid push conflicts
+git pull --rebase origin main || { echo "Pull failed, aborting"; exit 1; }
+
 "$PYTHON" - <<"PYTHON"
 import time, os
 from selenium import webdriver
