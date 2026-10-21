@@ -50,11 +50,11 @@
     }
   });
 
-  // Reload daily at 07:05 (5 min after screenshot cron at 07:00) to pick up fresh images
+  // Reload daily at 07:40 to pick up fresh images (generation cron 07:20, after the 07:05 challenge sync; worst case online about 07:31)
   const scheduleReload = () => {
     const now = new Date();
     const next = new Date(now);
-    next.setHours(7, 5, 0, 0);
+    next.setHours(7, 40, 0, 0);
     if (next <= now) next.setDate(next.getDate() + 1);
     setTimeout(() => location.reload(), next - now);
   };
